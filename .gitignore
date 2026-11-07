@@ -1,0 +1,5 @@
+dist/
+.DS_Store
+store/src/scene.mp4
+store/src/frame.png
+__pycache__/
