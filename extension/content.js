@@ -279,7 +279,8 @@
       acc.onstatechange = bind;
       if (!S.settings.midiEnabled) { S.settings.midiEnabled = true; saveSettings(); }
     } catch (e) {
-      S.midiStatus = 'Zugriff verweigert: ' + (e && e.message ? e.message : e);
+      S.midiStatus = 'Zugriff verweigert – Schloss-Symbol links in der Adressleiste → MIDI-Geräte: Zulassen, dann Seite neu laden';
+      console.warn('[Riff Looper] MIDI:', e);
       render();
     }
   }
@@ -294,16 +295,15 @@
     else return; // Note-Off, Clock usw. ignorieren
 
     const key = `${t}:${ch}:${d1}`;
-    const prev = S.lastCC[key];
+    S.msgCount = (S.msgCount || 0) + 1;
     if (t === 'cc') S.lastCC[key] = d2;
-    S.lastMsg = describeKey(key) + (t === 'cc' || t === 'note' ? ` = ${d2}` : '');
+    S.lastMsg = describeKey(key) + (t === 'cc' || t === 'note' ? ` = ${d2}` : '') + `  (${S.msgCount} empfangen)`;
 
     // MIDI-Learn
     if (S.learning) {
       const act = S.learning;
       const isPedal = act === 'speedPedal';
       if (isPedal && t !== 'cc') { renderMidiInfo(); return; }
-      if (!isPedal && t === 'cc' && S.settings.switchMode === 'momentary' && d2 < 64) { renderMidiInfo(); return; }
       for (const k of Object.keys(S.midiMap)) if (S.midiMap[k] === key) delete S.midiMap[k];
       S.midiMap[act] = key;
       S.learning = null;
@@ -321,8 +321,10 @@
         continue;
       }
       if (t === 'cc') {
-        if (S.settings.switchMode === 'momentary') { if (!(d2 >= 64 && (prev == null || prev < 64))) continue; }
-        else if (d2 === prev) continue; // rastender Schalter: jede Wertänderung = ein Tritt
+        // Standard: jeder Wert > 0 ist ein Tritt (Loslassen mit Wert 0 wird ignoriert).
+        // Funktioniert für Taster (127/0) und für Controller, die bei jedem Tritt denselben Wert senden.
+        // „Jede Nachricht“: für rastende Schalter, die abwechselnd 127 und 0 senden.
+        if (S.settings.switchMode === 'momentary' && d2 === 0) continue;
       }
       const now = performance.now();
       if (now - (S.lastTrig[key] || 0) < 120) continue; // Entprellen
@@ -528,13 +530,13 @@
     ui.midiLast = h('span', { class: 'ygl-midilast' });
     ui.midiConnect = h('button', { class: 'ygl-btn ygl-mini', onclick: () => initMidi() }, 'MIDI verbinden');
     ui.modeSel = h('select', { class: 'ygl-sel', onchange: (e) => { S.settings.switchMode = e.target.value; saveSettings(); } },
-      h('option', { value: 'momentary' }, 'Taster (momentary)'),
-      h('option', { value: 'latching' }, 'Rastend (latching)'));
+      h('option', { value: 'momentary' }, 'Standard (Wert > 0 = Tritt)'),
+      h('option', { value: 'latching' }, 'Jede Nachricht = Tritt'));
     ui.midiRows = h('div', { class: 'ygl-midirows' });
     ui.midiBox = h('div', { class: 'ygl-section' },
       h('div', { class: 'ygl-row' }, ui.midiConnect, ui.midiStatus),
       h('div', { class: 'ygl-row ygl-small' }, 'Letzte Nachricht: ', ui.midiLast),
-      h('div', { class: 'ygl-row' }, h('span', { class: 'ygl-label ygl-wide' }, 'Fußschalter-Typ (bei CC)'), ui.modeSel),
+      h('div', { class: 'ygl-row' }, h('span', { class: 'ygl-label ygl-wide' }, 'Auswertung (bei CC)'), ui.modeSel),
       ui.midiRows,
       h('div', { class: 'ygl-row ygl-small' }, 'Pedal-Bereich',
         numInput('pedalMin', 25, 200, 5, 'Tempo bei Pedalwert 0 (%)'), '% –',

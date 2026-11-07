@@ -41,9 +41,9 @@ Wenn du bei laufendem Loop an eine Stelle außerhalb des Loops springst (Timelin
 
 Unterstützt werden Control Change (CC), Note-On und Program Change. Unter „Letzte Nachricht“ siehst du, was dein Gerät sendet.
 
-**Fußschalter-Typ:**
-- *Taster (momentary)*: sendet beim Drücken 127 und beim Loslassen 0. Das ist der Normalfall.
-- *Rastend (latching)*: sendet abwechselnd 127 und 0. Hier umstellen, falls nur jeder zweite Tritt wirkt.
+**Auswertung (bei CC):**
+- *Standard*: Jeder Wert über 0 zählt als Tritt, der Loslass-Wert 0 wird ignoriert. Das passt für die meisten Fußschalter.
+- *Jede Nachricht = Tritt*: für rastende Schalter, die abwechselnd 127 und 0 senden. Hier umstellen, falls nur jeder zweite Tritt wirkt.
 
 **Empfohlene Belegungen**
 - **Ein Schalter:** *Smart-Taste*. 1. Tritt = A, 2. Tritt = B und Loop läuft, 3. Tritt = Loop aus. Danach beginnt es wieder von vorn.
