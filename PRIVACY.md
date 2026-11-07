@@ -18,7 +18,7 @@ Diese Daten verlassen deinen Browser nicht in Richtung des Entwicklers oder Drit
 
 **Seitenzugriff:** Die Erweiterung läuft nur auf `www.youtube.com`. Sie steuert dort die Wiedergabe des Videos (Position, Tempo) und blendet ihr Bedienfeld ein. Inhalte der Seite werden nicht ausgelesen oder übertragen.
 
-**Kontakt:** [E-Mail-Adresse eintragen]
+**Kontakt:** riffloopr@gmail.com
 
 ## English
 
@@ -36,4 +36,4 @@ This data is never sent to the developer or third parties. It is deleted when yo
 
 **Site access:** The extension runs only on `www.youtube.com`. There it controls video playback (position, speed) and shows its control panel. It does not read or transmit page content.
 
-**Contact:** [enter e-mail address]
+**Contact:** riffloopr@gmail.com

@@ -4,8 +4,7 @@ Alle Texte zum Hineinkopieren stehen unten. Die Platzhalter in eckigen Klammern 
 
 ## 0. Vorbereitung (einmalig)
 
-- [ ] Eine **eigene E-Mail-Adresse** für das Projekt anlegen, z. B. riff.looper@gmail.com. Sie wird im Store öffentlich als Kontakt angezeigt.
-- [ ] Diese Adresse in `PRIVACY.md` an beiden Stellen bei „[E-Mail-Adresse eintragen]“ eintragen.
+- [x] Projekt-E-Mail: **riffloopr@gmail.com** (ist in `PRIVACY.md` eingetragen)
 - [ ] Ein **GitHub-Repository** anlegen und den Inhalt dieses Ordners hochladen (siehe Abschnitt „GitHub“ ganz unten).
 - [ ] Die URL der Datenschutzerklärung notieren: `https://github.com/[DEIN-GITHUB-NAME]/riff-looper/blob/main/PRIVACY.md`
 - [ ] Das Upload-Paket bauen: `./scripts/build.sh` erzeugt `dist/riff-looper-1.0.0.zip`. Darin liegt `manifest.json` direkt auf oberster Ebene, wie der Store es verlangt.
